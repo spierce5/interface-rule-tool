@@ -4,6 +4,10 @@
   "description": "A set of commands for working with XML interface rules containing SQL.",
   "publisher": "spierce5",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spierce5/interface-rule-tool.git"
+  },
   "engines": {
     "vscode": "^1.39.0",
     "azdata": "*"
