@@ -1,0 +1,56 @@
+{
+  "name": "interface-rule-tool",
+  "displayName": "InterfaceRuleTool",
+  "description": "A set of functions for working with XML interface rules containing SQL.",
+  "publisher": "spierce5",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.39.0",
+    "azdata": "*"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:interface-rule-tool.helloWorld",
+    "onCommand:interface-rule-tool.showCurrentConnection"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "interface-rule-tool.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "interface-rule-tool.showCurrentConnection",
+        "title": "Show Current Connection"
+      },
+      {
+        "command": "interface-rule-tool.removeXML",
+        "title": "Remove XML"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js",
+    "proposedapi": "node installTypings.js"
+  },
+  "devDependencies": {
+    "@types/azdata": "*",
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^13.11.0",
+    "@types/vscode": "^1.39.0",
+    "azdata-test": "^1.x",
+    "eslint": "^6.8.0",
+    "glob": "^7.1.7",
+    "mocha": "^9.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "jsdom": "^24.0.0"
+  }
+}
