@@ -1,7 +1,7 @@
 {
   "name": "interface-rule-tool",
-  "displayName": "InterfaceRuleTool",
-  "description": "A set of functions for working with XML interface rules containing SQL.",
+  "displayName": "Interface Rule Tool",
+  "description": "A set of commands for working with XML interface rules containing SQL.",
   "publisher": "spierce5",
   "version": "0.0.1",
   "engines": {
