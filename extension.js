@@ -40,7 +40,7 @@ function activate(context) {
       () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
-          vscode.window.showInformationMessage("activeEditor not found");
+          vscode.window.showInformationMessage("Active editor not found");
         } else {
           const newEditorContent = parseSQLFromXML(activeEditor);
           newTextEditor()
@@ -68,8 +68,20 @@ function parseSQLFromXML(activeEditor) {
   const dom = new JSDOM(text, {
     contentType: "text/xml",
   });
-  let sqlTags = Array.from(dom.window.document.getElementsByTagName("sql"));
-  let sqlQueries = sqlTags.map((tag) => tag.textContent);
+  let statementTags = Array.from(
+    dom.window.document.getElementsByTagName("statement")
+  );
+  let sqlQueries = statementTags.map((tag) => {
+    let query = tag.getElementsByTagName("sql")[0].textContent;
+    const tableName = tag.getElementsByTagName("tablename")[0].textContent;
+    const relation = tag.getElementsByTagName("relation");
+    let queryHeader = `/*\n * Table: ${tableName}`;
+    if (relation.length > 0) {
+      queryHeader += `\n * Relation: ${relation[0].textContent}`;
+    }
+    query = `${queryHeader}\n */\n${query}`;
+    return query;
+  });
   let sqlContent = sqlQueries.join("\n\n");
   vscode.window.showInformationMessage(
     // dom.window.document.querySelector("sql").textContent
