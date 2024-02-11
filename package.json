@@ -21,6 +21,12 @@
         "command": "interface-rule-tool.extractSQLFromXML",
         "title": "Extract SQL from XML"
       }
+    ],
+    "keybindings": [
+      {
+        "key": "ctrl+alt+shift+q",
+        "command": "interface-rule-tool.extractSQLFromXML"
+      }
     ]
   },
   "scripts": {
