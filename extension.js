@@ -61,58 +61,48 @@ function activate(context) {
       if (!activeEditor) {
         vscode.window.showInformationMessage("activeEditor not found");
       } else {
-        const { text, range } = getTextInfo(activeEditor);
-        vscode.window.showInformationMessage(text);
-        parseSQLFromXML(activeEditor);
+        const newEditorContent = parseSQLFromXML(activeEditor);
+        newTextEditor()
+          .then(() => {
+            const newTextEditor = vscode.window.activeTextEditor;
+            newTextEditor.insertSnippet(
+              new vscode.SnippetString(newEditorContent)
+            );
+          })
+          .then(() => {
+            vscode.commands.executeCommand("editor.action.formatDocument");
+          });
       }
     })
   );
 }
 
-// function removeXML(activeEditor, activeEditorEdit) {
-//   const { text, range } = getTextInfo(activeEditor);
-//   vscode.window.showInformationMessage(text);
-// }
-
-function getTextInfo(activeEditor) {
-  const { selection, document } = activeEditor;
-  let { start, end } = selection;
-
-  if (
-    start.line > end.line ||
-    (start.line === end.line && start.character >= end.character)
-  ) {
-    const lastLine = document.lineCount - 1;
-    const lastLineObj = document.lineAt(lastLine);
-
-    const lastChar = lastLineObj.range.end.character;
-
-    start = { character: 0, line: 0 };
-    end = { character: lastChar, line: lastLine };
-  }
-
-  const range = new vscode.Range(
-    start.line,
-    start.character,
-    end.line,
-    end.character
-  );
-  const text = document.getText(range);
-
-  return {
-    text,
-    range,
-  };
+async function newTextEditor() {
+  return await vscode.commands.executeCommand("newQuery");
 }
 
 function parseSQLFromXML(activeEditor) {
-  const { text } = getTextInfo(activeEditor);
+  const { text } = getText(activeEditor);
   const dom = new JSDOM(text, {
     contentType: "text/xml",
   });
+  let sqlTags = Array.from(dom.window.document.getElementsByTagName("sql"));
+  let sqlQueries = sqlTags.map((tag) => tag.textContent);
+  let sqlContent = sqlQueries.join("\n\n");
   vscode.window.showInformationMessage(
-    dom.window.document.querySelector("sql").textContent
+    // dom.window.document.querySelector("sql").textContent
+    sqlContent
   );
+  return sqlContent;
+}
+
+function getText(activeEditor) {
+  const { document } = activeEditor;
+  const text = document.getText();
+
+  return {
+    text,
+  };
 }
 
 exports.activate = activate;

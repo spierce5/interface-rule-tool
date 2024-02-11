@@ -12,23 +12,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:interface-rule-tool.helloWorld",
-    "onCommand:interface-rule-tool.showCurrentConnection"
+    "onCommand:interface-rule-tool.extractSQLFromXML"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "interface-rule-tool.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "interface-rule-tool.showCurrentConnection",
-        "title": "Show Current Connection"
-      },
-      {
-        "command": "interface-rule-tool.removeXML",
-        "title": "Remove XML"
+        "command": "interface-rule-tool.extractSQLFromXML",
+        "title": "Extract SQL from XML"
       }
     ]
   },
