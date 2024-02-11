@@ -77,7 +77,10 @@ function parseSQLFromXML(activeEditor) {
     const relation = tag.getElementsByTagName("relation");
     let queryHeader = `/*\n * Table: ${tableName}`;
     if (relation.length > 0) {
-      queryHeader += `\n * Relation: ${relation[0].textContent}`;
+      const name = relation[0].getAttribute("name");
+      const parent = relation[0].getAttribute("parent");
+      queryHeader += `\n * Relation: ${name}`;
+      queryHeader += `\n * Parent: ${parent}`;
     }
     query = `${queryHeader}\n */\n${query}`;
     return query;
