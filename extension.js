@@ -57,6 +57,27 @@ function activate(context) {
       }
     )
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "interface-rule-tool.convertSQLToXML",
+      () => {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (!activeEditor) {
+          vscode.window.showInformationMessage("Active editor not found");
+        } else {
+          const { text } = getText(activeEditor);
+          const newEditorContent = convertSQLToXML(text);
+          newTextEditor().then(() => {
+            const newTextEditor = vscode.window.activeTextEditor;
+            newTextEditor.insertSnippet(
+              new vscode.SnippetString(newEditorContent)
+            );
+          });
+        }
+      }
+    )
+  );
 }
 
 async function newTextEditor() {
@@ -73,7 +94,9 @@ function parseSQLFromXML(activeEditor) {
   );
   let sqlQueries = statementTags.map((tag) => {
     let query = tag.getElementsByTagName("sql")[0].textContent;
-    const tableName = tag.getElementsByTagName("tablename")[0].textContent;
+    const tableName = tag
+      .getElementsByTagName("tablename")[0]
+      .textContent.replace(/[\n\r\t]+/g, " ");
     const relation = tag.getElementsByTagName("relation");
     let queryHeader = `/*\n * Table: ${tableName}`;
     if (relation.length > 0) {
@@ -100,6 +123,16 @@ function getText(activeEditor) {
   return {
     text,
   };
+}
+
+function convertSQLToXML(text) {
+  const dom = new JSDOM(`<sql></sql>`, {
+    contentType: "text/xml",
+  });
+  const sqlTag = dom.window.document.querySelector("sql");
+  sqlTag.textContent = text.replace(/[\n\r\t]+/g, " ");
+  const serializer = new dom.window.XMLSerializer();
+  return serializer.serializeToString(dom.window.document);
 }
 
 exports.activate = activate;

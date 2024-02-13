@@ -16,7 +16,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:interface-rule-tool.extractSQLFromXML"
+    "onCommand:interface-rule-tool.extractSQLFromXML",
+    "onCommand:interface-rule-tool.convertSQLToXML"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -24,12 +25,20 @@
       {
         "command": "interface-rule-tool.extractSQLFromXML",
         "title": "Extract SQL from XML"
+      },
+      {
+        "command": "interface-rule-tool.convertSQLToXML",
+        "title": "Convert SQL to XML"
       }
     ],
     "keybindings": [
       {
         "key": "ctrl+alt+shift+q",
         "command": "interface-rule-tool.extractSQLFromXML"
+      },
+      {
+        "key": "ctrl+alt+shift+w",
+        "command": "interface-rule-tool.convertSQLToXML"
       }
     ]
   },
